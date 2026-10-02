@@ -89,7 +89,7 @@ def response(request):
     if method == "initialize":
         requested = params.get("protocolVersion")
         result = {"protocolVersion": requested if requested in PROTOCOL_VERSIONS else PROTOCOL_VERSIONS[-1],
-                  "capabilities": {"tools": {}}, "serverInfo": {"name": "astra-local-council", "version": "0.2.0"}}
+                  "capabilities": {"tools": {}}, "serverInfo": {"name": "astra-local-council", "version": "0.3.1"}}
     elif method == "ping":
         result = {}
     elif method == "tools/list":

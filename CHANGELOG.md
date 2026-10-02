@@ -2,9 +2,15 @@
 
 Linux refinement: POSIX launchers, distribution-neutral prerequisites, explicit native Rust target despite cross-compilation defaults, and distro container CI. Canonical path/terminal EOF regressions found by native platform CI are covered.
 
+## 0.3.1 — 2026-10-02
+
+- License project code and original documentation under GNU GPL version 3 only (GPL-3.0-only), with no MIT alternative.
+- Include the full GPLv3 text in source, installed skills, and both release ZIPs; preserve upstream third-party notices.
+- Align installer, Cargo package, and MCP server version metadata with this release.
+
 ## 0.3.0 — 2026-10-02
 
-- Publish The Council of Coding as an MIT-licensed project with upstream model/template notices.
+- Publish The Council of Coding with upstream model/template notices.
 - Preserve a valid proposal and risk evidence before reviews, so a failed reviewer can be corrected through resume.
 - Clarify worker output modes and avoid substituting setup/test commands for requested code.
 - Add measured Ollama duration fields and generation throughput, retaining unknown values as null.

@@ -1,6 +1,6 @@
 # The Council of Coding
 
-Download the source installer and separate Perplexity upload ZIP from [the 0.3.0 release](https://github.com/Ajbevan-create/the-council-of-coding/releases/tag/v0.3.0).
+Download the source installer and separate Perplexity upload ZIP from [the 0.3.1 release](https://github.com/Ajbevan-create/the-council-of-coding/releases/tag/v0.3.1).
 
 An open-source local AI council for coding, testing, and drafting. Your current assistant supervises a Qwen proposer, a Qwen reviewer, and a Granite safety critic. The workers return exact command/code proposals; the supervisor reviews them, performs authorized work, verifies the results, and sends actual feedback back to the council.
 
@@ -148,4 +148,4 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for changes and [CHANGELOG.md](CHANGELOG.
 
 ## License
 
-Project code and original documentation are [MIT licensed](LICENSE). The bundled Granite chat-template configuration retains its upstream Apache-2.0 terms; see [third-party notices](THIRD_PARTY_NOTICES.md) and [Apache-2.0](licenses/Apache-2.0.txt). Downloaded model weights and installed dependencies retain their publishers' licenses. No model weights are committed to this repository.
+Copyright (C) 2026 Ajbevan-create and contributors. Project code and original documentation are licensed under the [GNU General Public License, version 3 only (GPL-3.0-only)](LICENSE). You may redistribute and modify them under GPL version 3. They are provided without any warranty; see LICENSE for the full terms. The bundled Granite chat-template configuration retains its upstream Apache-2.0 terms; see [third-party notices](THIRD_PARTY_NOTICES.md) and [Apache-2.0](licenses/Apache-2.0.txt). Downloaded model weights and installed dependencies retain their publishers' licenses. No model weights are committed to this repository.

@@ -1,6 +1,6 @@
 ---
 name: astra-local-orchestrator
-license: MIT
+license: GPL-3.0-only
 description: Delegate bounded implementation, testing, or drafting to local Qwen workers with Qwen and Granite review, then inspect and execute authorized proposals using the current supervising assistant. Requires an installed local Ollama council. Skip trivial tasks, explicit single-agent work, and local implementation workers.
 ---
 

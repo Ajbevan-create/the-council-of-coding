@@ -18,7 +18,7 @@ from selection import select_os, select_assistants, target_paths
 
 PACKAGE = Path(__file__).resolve().parent.parent
 API = "http://127.0.0.1:11434"
-VERSION = "0.3.0"
+VERSION = "0.3.1"
 
 def digest(path):
     result = hashlib.sha256()
@@ -83,7 +83,7 @@ def download(model, cache):
         return destination
     part = destination.with_suffix(".gguf.part")
     print(f"Downloading {model['role']}: {model['bytes'] / 1e9:.2f} GB", flush=True)
-    request = urllib.request.Request(model["url"], headers={"User-Agent": "astra-local-orchestrator/0.3.0"})
+    request = urllib.request.Request(model["url"], headers={"User-Agent": "astra-local-orchestrator/0.3.1"})
     received = 0
     result = hashlib.sha256()
     with urllib.request.urlopen(request, timeout=120) as response, part.open("wb") as stream:

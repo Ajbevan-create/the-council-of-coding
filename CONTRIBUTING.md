@@ -8,4 +8,4 @@ The runner must never execute model-proposed commands. Preserve review disagreem
 
 After changing package files, regenerate `SHA256SUMS` with `python3 scripts/package_release.py --checksums-only`. Release archives are generated outside the source tree; never commit model weights, runtime configuration, or reports.
 
-Project code is MIT licensed. Keep third-party model and template notices intact.
+Project code and original documentation are licensed under GPL-3.0-only. Contributions to them are accepted under the same license; see LICENSE. Keep third-party model and template notices intact.

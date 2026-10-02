@@ -1,4 +1,6 @@
-# Validation for release 0.3.0
+# Validation for release 0.3.1
+
+The 0.3.1 update changes project licensing to GPL-3.0-only and aligns version metadata. The functional portability and performance evidence below was obtained for 0.3.0; historical measurements retain their original version labels. For 0.3.1, all 29 Python tests and 13 Rust tests passed again locally. Both release ZIPs were checked for the full GPLv3 text and GPL-3.0-only skill metadata; all source archive hashes matched the regenerated manifest.
 
 Checked on a native Linux host on 2026-10-02:
 
@@ -22,7 +24,7 @@ All eight jobs in [GitHub Actions run 36980476755](https://github.com/Ajbevan-cr
 | Windows native (x64 runner) | 13 Rust tests, 29 Python tests, source checksums, CMD and PowerShell launcher previews, native release build |
 | Ubuntu, Fedora, Arch, openSUSE Tumbleweed, Alpine containers | 29 Python installer/MCP tests, source checksums, POSIX launcher syntax and preview on each distribution |
 
-An initial public source transfer was truncated; cloning it back and checking the manifest caught that error, and the complete source was restored. Subsequent native CI exposed package-path alias and terminal EOF cases, which were corrected and given regression coverage before the successful run above. The installer-generated Perplexity ZIP was subsequently corrected to include the MIT license/notices and verified through a real isolated Linux install. No precompiled native binaries are bundled. Real assistant discovery/upload and full macOS/Windows Ollama inference remain untested.
+An initial public source transfer was truncated; cloning it back and checking the manifest caught that error, and the complete source was restored. Subsequent native CI exposed package-path alias and terminal EOF cases, which were corrected and given regression coverage before the successful run above. The installer-generated Perplexity ZIP was subsequently corrected to include the project license/notices and verified through a real isolated Linux install. No precompiled native binaries are bundled. Real assistant discovery/upload and full macOS/Windows Ollama inference remain untested.
 
 The Linux source installer has no DEB/APT or systemd dependency. POSIX launchers remove a Bash prerequisite. A real NixOS native install/upgrade passed even with `CARGO_BUILD_TARGET=wasm32-unknown-unknown` inherited; the helper explicitly selected the actual native Rust host and diagnosed the resulting binary successfully. The distribution guide documents Python SSL/CA certificates, native GNU/musl toolchains, NixOS runtime paths, and compatible local Ollama requirements. The container checks are not a guarantee of every derivative distro, architecture, GPU, or upstream Ollama binary; musl Rust release builds and container inference were not performed by those contract jobs.
 
