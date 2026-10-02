@@ -261,7 +261,7 @@ def main(argv=None):
     if "perplexity" in assistants:
         archive = root / "perplexity-skill.zip"
         with zipfile.ZipFile(archive, "w", zipfile.ZIP_DEFLATED) as bundle:
-            for path in [PACKAGE / "SKILL.md", PACKAGE / "references/runtime.md", PACKAGE / "references/compatibility.md"]:
+            for path in [PACKAGE / name for name in ["SKILL.md", "references/runtime.md", "references/compatibility.md", "LICENSE", "THIRD_PARTY_NOTICES.md"]]:
                 bundle.write(path, path.relative_to(PACKAGE).as_posix())
         print(f"Perplexity: upload {archive} on Computer > Skills > Create skill > Upload a skill. Local execution also needs a working local connector; see references/compatibility.md.")
     (root / "install-receipt.json").write_text(json.dumps({"version": VERSION, "os": selected_os, "assistants": assistants, "model_imports": receipts, "model_checks_skipped": options.skip_models, "skill_folders": [str(path) for path in destinations]}, indent=2), encoding="utf-8")

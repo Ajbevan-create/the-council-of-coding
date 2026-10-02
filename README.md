@@ -1,5 +1,7 @@
 # The Council of Coding
 
+Download the source installer and separate Perplexity upload ZIP from [the 0.3.0 release](https://github.com/Ajbevan-create/the-council-of-coding/releases/tag/v0.3.0).
+
 An open-source local AI council for coding, testing, and drafting. Your current assistant supervises a Qwen proposer, a Qwen reviewer, and a Granite safety critic. The workers return exact command/code proposals; the supervisor reviews them, performs authorized work, verifies the results, and sends actual feedback back to the council.
 
 **The runner never executes model-proposed commands.** Agreement between models does not authorize an action or establish that the code is correct. Real review and tests remain necessary. Local inference uses your hardware; supervising work can still consume your assistant's account usage.

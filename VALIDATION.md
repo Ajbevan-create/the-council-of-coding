@@ -13,9 +13,18 @@ Checked on a native Linux host on 2026-10-02:
 - Skill frontmatter passed the skill-creator validator. Python files compiled; Bash launchers passed syntax checking. Release archive contents and checksum manifest were verified after extraction.
 - A fresh Git checkout configured with `core.autocrlf=true` retained the expected source checksums because `.gitattributes` enforces LF. This is a local checkout check, not a native Windows execution claim.
 
-Native macOS and Windows execution is checked through GitHub Actions rather than this NixOS host. An initial public source transfer was truncated; cloning it back and checking the manifest caught that error, and the complete source was restored. The corrected-source CI passed all Rust tests on Ubuntu, macOS, and Windows; Ubuntu also passed Python tests, checksum verification, and a native release build. macOS/Windows CI exposed package-path alias and terminal EOF cases, which were corrected and given regression coverage. The expanded native/distro matrix is being verified before the final release record. No precompiled native binaries are bundled. Real assistant discovery/upload and full macOS/Windows Ollama inference remain untested.
+All eight jobs in [GitHub Actions run 36980476755](https://github.com/Ajbevan-create/the-council-of-coding/actions/runs/36980476755) passed for code commit `47fc4048d4369bc4e1d5faeb5bfd0e84cfe1d23d`:
 
-The Linux source installer has no DEB/APT or systemd dependency. POSIX launchers remove a Bash prerequisite. The distribution guide documents Python SSL/CA certificates, native GNU/musl toolchains, NixOS runtime paths, and compatible local Ollama requirements. CI supplies installer/MCP/checksum/launcher contracts for Ubuntu, Fedora, Arch, openSUSE, and Alpine; this is not a guarantee of every derivative distro, architecture, GPU, or upstream Ollama binary.
+| Environment | Verified |
+|---|---|
+| Ubuntu native | 13 Rust tests, 29 Python tests, source checksums, POSIX launcher preview, native release build |
+| macOS native (ARM64 runner) | 13 Rust tests, 29 Python tests, source checksums, POSIX launcher preview, native release build |
+| Windows native (x64 runner) | 13 Rust tests, 29 Python tests, source checksums, CMD and PowerShell launcher previews, native release build |
+| Ubuntu, Fedora, Arch, openSUSE Tumbleweed, Alpine containers | 29 Python installer/MCP tests, source checksums, POSIX launcher syntax and preview on each distribution |
+
+An initial public source transfer was truncated; cloning it back and checking the manifest caught that error, and the complete source was restored. Subsequent native CI exposed package-path alias and terminal EOF cases, which were corrected and given regression coverage before the successful run above. The installer-generated Perplexity ZIP was subsequently corrected to include the MIT license/notices and verified through a real isolated Linux install. No precompiled native binaries are bundled. Real assistant discovery/upload and full macOS/Windows Ollama inference remain untested.
+
+The Linux source installer has no DEB/APT or systemd dependency. POSIX launchers remove a Bash prerequisite. A real NixOS native install/upgrade passed even with `CARGO_BUILD_TARGET=wasm32-unknown-unknown` inherited; the helper explicitly selected the actual native Rust host and diagnosed the resulting binary successfully. The distribution guide documents Python SSL/CA certificates, native GNU/musl toolchains, NixOS runtime paths, and compatible local Ollama requirements. The container checks are not a guarantee of every derivative distro, architecture, GPU, or upstream Ollama binary; musl Rust release builds and container inference were not performed by those contract jobs.
 
 The MCP adapter supports initialize-handshake revisions through 2025-11-25. A client requiring only the newer stateless MCP revision needs legacy compatibility. Perplexity upload instructions and local MCP availability depend on its client/account; see `references/compatibility.md`.
 
