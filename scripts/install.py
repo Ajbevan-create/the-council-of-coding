@@ -67,7 +67,78 @@ def command(argv, environment=None):
 
 def download(model, cache):
     destination = cache / model["filename"]
-    if destination.is_file() and digest(destination) == mo…1079 tokens truncated… print(f"Previous skill preserved: {backup}")
+    if destination.is_file() and digest(destination) == model["sha256"]:
+        return destination
+    part = destination.with_suffix(".gguf.part")
+    print(f"Downloading {model['role']}: {model['bytes'] / 1e9:.2f} GB", flush=True)
+    request = urllib.request.Request(model["url"], headers={"User-Agent": "astra-local-orchestrator/0.3.0"})
+    received = 0
+    result = hashlib.sha256()
+    with urllib.request.urlopen(request, timeout=120) as response, part.open("wb") as stream:
+        for block in iter(lambda: response.read(1024 * 1024), b""):
+            received += len(block)
+            if received > model["bytes"]:
+                raise ValueError("Download exceeded its pinned size.")
+            stream.write(block)
+            result.update(block)
+    if received != model["bytes"] or result.hexdigest() != model["sha256"]:
+        raise ValueError(f"Model checksum mismatch: {model['alias']}. Nothing was imported.")
+    os.replace(part, destination)
+    return destination
+
+def modelfile(model, weights):
+    filename = weights.as_posix()
+    if any(character in filename for character in '\n\r"'):
+        raise ValueError("Model path contains an unsupported quote or newline.")
+    text = f'FROM "{filename}"\n'
+    if model.get("template"):
+        text += 'TEMPLATE """' + (PACKAGE / model["template"]).read_text(encoding="utf-8") + '"""\n'
+    for key, value in model["parameters"].items():
+        text += f"PARAMETER {key} {value}\n"
+    return text
+
+def install_models(models, root, ollama, environment, replace=False):
+    present = {item["name"] for item in api("/api/tags").get("models", [])}
+    cache = root / "model-downloads"
+    cache.mkdir(parents=True, exist_ok=True, mode=0o700)
+    receipts = []
+    for model in models:
+        alias = model["alias"]
+        if alias in present and not replace:
+            info = api("/api/show", {"model": alias})
+            if "sha256-" + model["sha256"] not in info.get("modelfile", ""):
+                raise ValueError(f"Existing {alias} differs from the pinned weights. Use --replace-models explicitly to replace its alias.")
+            receipts.append({"alias": alias, "sha256": model["sha256"], "action": "reused"})
+            continue
+        if shutil.disk_usage(root).free < model["bytes"] * 2 + 1024**3:
+            raise ValueError("Insufficient free disk space for download and import; allow at least 25 GB for the initial setup.")
+        weights = download(model, cache)
+        with tempfile.TemporaryDirectory(prefix="import-", dir=root) as temporary:
+            config = Path(temporary) / "Modelfile"
+            config.write_text(modelfile(model, weights), encoding="utf-8")
+            command([ollama, "create", alias, "-f", config], environment)
+        receipts.append({"alias": alias, "sha256": model["sha256"], "action": "imported"})
+    return receipts
+
+def copy_skill(destination, root, binary, upgrade=False):
+    destination.parent.mkdir(parents=True, exist_ok=True)
+    if destination.exists():
+        if not upgrade:
+            raise ValueError(f"Skill already exists: {destination}; use --upgrade to preserve a backup and replace it.")
+    # Finish the new copy before moving the existing installation out of the way.
+    with tempfile.TemporaryDirectory(prefix=".astra-install-", dir=destination.parent) as temporary:
+        staged = Path(temporary) / destination.name
+        shutil.copytree(PACKAGE, staged, ignore=shutil.ignore_patterns("target", "__pycache__", "*.pyc", ".git", ".github", "SHA256SUMS"))
+        (staged / "runtime.json").write_text(json.dumps({"version": VERSION, "binary": str(binary), "data_dir": str(root)}, indent=2), encoding="utf-8")
+        backup = None
+        if destination.exists():
+            # Keep old SKILL.md files outside assistant discovery directories.
+            backups = root / "skill-backups"
+            backups.mkdir(parents=True, exist_ok=True, mode=0o700)
+            identity = hashlib.sha256(str(destination).encode("utf-8")).hexdigest()[:12]
+            backup = backups / f"{destination.name}-{identity}-{time.time_ns()}"
+            shutil.move(str(destination), str(backup))
+            print(f"Previous skill preserved: {backup}")
         try:
             staged.rename(destination)
         except OSError:
