@@ -33,6 +33,11 @@ class SelectionTests(unittest.TestCase):
         with patch.object(selection.sys.stdin, "isatty", return_value=True), patch("builtins.input", side_effect=["", "0", "9", "bad", "2"]), contextlib.redirect_stdout(io.StringIO()):
             self.assertEqual(selection.choose("OS", ["linux", "macos", "windows"]), "macos")
 
+    def test_terminal_eof_requires_explicit_choices(self):
+        with patch.object(selection.sys.stdin, "isatty", return_value=True), patch("builtins.input", side_effect=EOFError), contextlib.redirect_stdout(io.StringIO()):
+            with self.assertRaisesRegex(ValueError, "Explicit choices required"):
+                selection.choose("OS", ["linux", "macos", "windows"])
+
     def test_assistants_all_multiple_and_custom(self):
         self.assertEqual(selection.select_assistants("codex,gemini,codex"), ["codex", "gemini"])
         self.assertEqual(selection.select_assistants("all"), selection.ASSISTANTS[:6])

@@ -57,13 +57,15 @@ GPU support depends on the OS, device, and driver; consult [Ollama's hardware su
 
    | OS | Command |
    |---|---|
-   | Linux / macOS | `bash install.sh` |
+   | Linux / macOS | `sh install.sh` |
    | Windows Command Prompt | `install.cmd` |
    | Windows PowerShell | `py -3 scripts/install.py` |
 
 6. Select your OS, then your assistant. Neither menu has a default; blank and invalid answers require another choice. OS selection must match the machine running the installer. Refresh/restart your assistant's skill list after installation.
 
 Python uses only the standard library; no pip packages are needed. On NixOS, expose native Python, Cargo, Rust, the linker, and Ollama on `PATH` using your normal Nix setup; generic downloaded toolchain executables may need NixOS-specific integration.
+
+Linux installation is distribution-neutral: no DEB/APT, systemd, or Bash requirement. Debian/Ubuntu, Fedora/RHEL, Arch, openSUSE, Alpine/musl, NixOS, and other distributions use the same source installer when compatible prerequisites are available. See [the Linux distribution guide](references/linux.md) for native toolchains, CA certificates, and Ollama/libc requirements. The installer builds for the actual Rust host target even when cross-compilation defaults are configured.
 
 The installer downloads and verifies pinned weights, imports aliases, builds the runner for your OS, checks its local diagnostic, and installs the selected skill folders. It does not alter your assistant's authentication, selected model, global agent instructions, or existing MCP configuration.
 
@@ -136,7 +138,7 @@ python3 scripts/package_release.py --checksums-only
 python3 scripts/package_release.py --output-dir <absolute-directory-outside-this-repository>
 ```
 
-Windows uses `py -3`. The GitHub Actions matrix covers Linux, macOS, and Windows. `.gitattributes` preserves LF bytes so Windows clones can verify the source checksum manifest.
+Windows uses `py -3`. The GitHub Actions matrix covers native Linux, macOS, and Windows, plus installer/MCP/POSIX-launcher contracts in Ubuntu, Fedora, Arch, openSUSE, and Alpine containers. `.gitattributes` preserves LF bytes so Windows clones can verify the source checksum manifest.
 
 If prerequisites are missing, install them and reopen your terminal. If Ollama is unavailable, launch it on the same host. Checksum/alias conflicts stop imports; use explicit replacement or the documented skip option deliberately. If the lock is busy, wait for the current council. A diagnostic passes without inference and therefore does not establish model generation or quality. Close an active Windows executable before upgrading. Share release/source files rather than runtime reports, caches, account settings, or credentials.
 

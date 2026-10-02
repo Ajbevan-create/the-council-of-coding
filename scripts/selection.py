@@ -21,7 +21,7 @@ def choose(title, choices):
         try:
             answer = input("Choose a number or name (no default): ").strip().lower()
         except EOFError:
-            raise ValueError("No choice supplied. Pass --os and --assistant explicitly.")
+            raise ValueError("Explicit choices required: no input supplied. Pass --os and --assistant explicitly.")
         if answer in choices:
             return answer
         if answer.isdigit() and 1 <= int(answer) <= len(choices):

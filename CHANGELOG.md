@@ -1,5 +1,7 @@
 # Changelog
 
+Linux refinement: POSIX launchers, distribution-neutral prerequisites, explicit native Rust target despite cross-compilation defaults, and distro container CI. Canonical path/terminal EOF regressions found by native platform CI are covered.
+
 ## 0.3.0 — 2026-10-02
 
 - Publish The Council of Coding as an MIT-licensed project with upstream model/template notices.

@@ -65,6 +65,18 @@ def runtime_dir(selected_os, environment, user_home):
 def command(argv, environment=None):
     subprocess.run([str(item) for item in argv], env=environment, check=True)
 
+def build_native(cargo, rustc, root, selected_os, environment):
+    output = subprocess.check_output([rustc, "-vV"], text=True, encoding="utf-8", env=environment)
+    hosts = [line.removeprefix("host: ") for line in output.splitlines() if line.startswith("host: ")]
+    if len(hosts) != 1 or not re.fullmatch(r"[A-Za-z0-9_]+(?:-[A-Za-z0-9_]+){2,}", hosts[0]):
+        raise ValueError("Expected exactly one valid native host triple from rustc -vV.")
+    host = hosts[0]
+    build_environment = dict(environment, RUSTC=str(rustc))
+    command([cargo, "build", "--release", "--locked", "--target", host,
+             "--manifest-path", PACKAGE / "rust/Cargo.toml"], build_environment)
+    executable = "astra-local-team.exe" if selected_os == "windows" else "astra-local-team"
+    return root / "build" / host / "release" / executable
+
 def download(model, cache):
     destination = cache / model["filename"]
     if destination.is_file() and digest(destination) == model["sha256"]:
@@ -210,8 +222,9 @@ def main(argv=None):
     if not root.is_absolute():
         raise ValueError("--runtime-dir must be absolute.")
     root = root.resolve()
+    package = PACKAGE.resolve()
     destinations = list(dict.fromkeys(path for assistant in assistants for path in target_paths(assistant, user_home, os.environ, options.skills_dir)))
-    if root.is_relative_to(PACKAGE) or PACKAGE.is_relative_to(root):
+    if root.is_relative_to(package) or package.is_relative_to(root):
         raise ValueError("Runtime directory must be separate from the unpacked package.")
     for destination in destinations:
         if destination.is_symlink():
@@ -219,7 +232,7 @@ def main(argv=None):
         if destination.exists() and not options.upgrade:
             raise ValueError(f"Skill already exists: {destination}. Use --upgrade for a preserved backup.")
         resolved = destination.resolve()
-        if resolved.is_relative_to(PACKAGE) or PACKAGE.is_relative_to(resolved):
+        if resolved.is_relative_to(package) or package.is_relative_to(resolved):
             raise ValueError("Install destination must be separate from the unpacked package.")
         if resolved.is_relative_to(root) or root.is_relative_to(resolved):
             raise ValueError("Runtime and skill directories must be separate from each other.")
@@ -241,9 +254,8 @@ def main(argv=None):
     environment = dict(os.environ, OLLAMA_HOST=API, OLLAMA_NO_CLOUD="1", ASTRA_LOCAL_DATA_DIR=str(root), CARGO_TARGET_DIR=str(root / "build"))
     models = json.loads((PACKAGE / "models/sources.json").read_text(encoding="utf-8"))["models"]
     receipts = [] if options.skip_models else install_models(models, root, ollama, environment, options.replace_models)
-    command([cargo, "build", "--release", "--locked", "--manifest-path", PACKAGE / "rust/Cargo.toml"], environment)
-    executable = "astra-local-team.exe" if selected_os == "windows" else "astra-local-team"
-    binary = install_runtime(root / "build/release" / executable, root, environment)
+    build_binary = build_native(cargo, rustc, root, selected_os, environment)
+    binary = install_runtime(build_binary, root, environment)
     for destination in destinations:
         copy_skill(destination, root, binary, options.upgrade)
     if "perplexity" in assistants:

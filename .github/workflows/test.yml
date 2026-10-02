@@ -22,5 +22,56 @@ jobs:
         run: python -m unittest discover -s tests -v
       - name: Verify source checksums after native checkout
         run: python -c "import sys; sys.path.insert(0, 'scripts'); import install; install.verify_package()"
+      - name: Preview native Unix launcher
+        if: runner.os != 'Windows'
+        run: |
+          if [ "$RUNNER_OS" = macOS ]; then selected_os=macos; else selected_os=linux; fi
+          sh install.sh --os "$selected_os" --assistant custom --skills-dir "$RUNNER_TEMP/council skills" --runtime-dir "$RUNNER_TEMP/council runtime" --dry-run
+      - name: Preview native Windows launchers
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          & .\install.cmd --os windows --assistant custom --skills-dir "$env:RUNNER_TEMP\council skills" --runtime-dir "$env:RUNNER_TEMP\council runtime" --dry-run
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          & .\install.ps1 --os windows --assistant custom --skills-dir "$env:RUNNER_TEMP\council skills" --runtime-dir "$env:RUNNER_TEMP\council runtime" --dry-run
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
       - name: Build native runner
         run: cargo +stable build --release --locked --manifest-path rust/Cargo.toml
+  linux-distros:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - distro: Ubuntu
+            image: ubuntu:24.04
+            setup: apt-get update && apt-get install -y python3 ca-certificates
+          - distro: Fedora
+            image: fedora:latest
+            setup: dnf install -y python3 ca-certificates
+          - distro: Arch
+            image: archlinux:latest
+            setup: pacman -Syu --noconfirm python ca-certificates
+          - distro: openSUSE
+            image: registry.opensuse.org/opensuse/tumbleweed:latest
+            setup: zypper --non-interactive install python3 ca-certificates
+          - distro: Alpine
+            image: alpine:latest
+            setup: apk add --no-cache python3 ca-certificates
+    name: Linux contracts (${{ matrix.distro }})
+    steps:
+      - uses: actions/checkout@v4
+      - name: Installer, MCP, checksums, and POSIX launcher
+        env:
+          DISTRO_IMAGE: ${{ matrix.image }}
+          DISTRO_SETUP: ${{ matrix.setup }}
+        run: |
+          docker run --rm --env DISTRO_SETUP --env PYTHONUTF8=1 \
+            --mount "type=bind,source=$PWD,target=/source,readonly" \
+            --workdir /source "$DISTRO_IMAGE" sh -ec '
+              sh -ec "$DISTRO_SETUP"
+              python3 -m unittest discover -s tests -v
+              python3 -c "import sys; sys.path.insert(0, \"scripts\"); import install; install.verify_package()"
+              sh -n install.sh install.command
+              sh install.sh --os linux --assistant custom --skills-dir "/tmp/council skills" --runtime-dir "/tmp/council runtime" --dry-run
+            '
