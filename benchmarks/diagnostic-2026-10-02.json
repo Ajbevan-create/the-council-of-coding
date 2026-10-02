@@ -1,0 +1,139 @@
+{
+  "release": "0.3.0",
+  "date": "2026-10-02",
+  "task": "exact-answer diagnostic, no actions",
+  "runs": [
+    {
+      "run": 1,
+      "wall_seconds": 22.4,
+      "exit_code": 0,
+      "status": "ready_for_manager_review",
+      "execution": "not_executed",
+      "empty_actions": true,
+      "exact_answer": true,
+      "usage_per_call": [
+        {
+          "eval_duration_ns": 1671145000,
+          "generation_tokens_per_second": 25.132469055647473,
+          "input_tokens": 325,
+          "load_duration_ns": 4503702618,
+          "model": "qwen3.8-distill:9b-q4",
+          "output_tokens": 42,
+          "prompt_eval_duration_ns": 502647000,
+          "total_duration_ns": 6685286623,
+          "total_seconds": 6.685286623
+        },
+        {
+          "eval_duration_ns": 278930000,
+          "generation_tokens_per_second": 50.19180439536801,
+          "input_tokens": 215,
+          "load_duration_ns": 10014977439,
+          "model": "qwen3.5:4b",
+          "output_tokens": 14,
+          "prompt_eval_duration_ns": 268147000,
+          "total_duration_ns": 10564556951,
+          "total_seconds": 10.564556951
+        },
+        {
+          "eval_duration_ns": 370018000,
+          "generation_tokens_per_second": 40.538568393970024,
+          "input_tokens": 212,
+          "load_duration_ns": 3592648067,
+          "model": "granite4:1b-q4-local",
+          "output_tokens": 15,
+          "prompt_eval_duration_ns": 1168398000,
+          "total_duration_ns": 5134059772,
+          "total_seconds": 5.134059772
+        }
+      ]
+    },
+    {
+      "run": 2,
+      "wall_seconds": 24.77,
+      "exit_code": 0,
+      "status": "ready_for_manager_review",
+      "execution": "not_executed",
+      "empty_actions": true,
+      "exact_answer": true,
+      "usage_per_call": [
+        {
+          "eval_duration_ns": 1042252000,
+          "generation_tokens_per_second": 23.027060634088492,
+          "input_tokens": 325,
+          "load_duration_ns": 7528396575,
+          "model": "qwen3.8-distill:9b-q4",
+          "output_tokens": 24,
+          "prompt_eval_duration_ns": 488056000,
+          "total_duration_ns": 9067231312,
+          "total_seconds": 9.067231312
+        },
+        {
+          "eval_duration_ns": 294998000,
+          "generation_tokens_per_second": 50.84780235798209,
+          "input_tokens": 197,
+          "load_duration_ns": 10529297273,
+          "model": "qwen3.5:4b",
+          "output_tokens": 15,
+          "prompt_eval_duration_ns": 288018000,
+          "total_duration_ns": 11114900634,
+          "total_seconds": 11.114900634
+        },
+        {
+          "eval_duration_ns": 383133000,
+          "generation_tokens_per_second": 39.15089538097736,
+          "input_tokens": 194,
+          "load_duration_ns": 3113733963,
+          "model": "granite4:1b-q4-local",
+          "output_tokens": 15,
+          "prompt_eval_duration_ns": 1078359000,
+          "total_duration_ns": 4579143451,
+          "total_seconds": 4.579143451
+        }
+      ]
+    },
+    {
+      "run": 3,
+      "wall_seconds": 22.051,
+      "exit_code": 0,
+      "status": "ready_for_manager_review",
+      "execution": "not_executed",
+      "empty_actions": true,
+      "exact_answer": false,
+      "usage_per_call": [
+        {
+          "eval_duration_ns": 1653735000,
+          "generation_tokens_per_second": 24.18767214819787,
+          "input_tokens": 325,
+          "load_duration_ns": 4527635366,
+          "model": "qwen3.8-distill:9b-q4",
+          "output_tokens": 40,
+          "prompt_eval_duration_ns": 480015000,
+          "total_duration_ns": 6669113728,
+          "total_seconds": 6.669113728
+        },
+        {
+          "eval_duration_ns": 303695000,
+          "generation_tokens_per_second": 46.09888210210902,
+          "input_tokens": 212,
+          "load_duration_ns": 10027469229,
+          "model": "qwen3.5:4b",
+          "output_tokens": 14,
+          "prompt_eval_duration_ns": 245371000,
+          "total_duration_ns": 10579402834,
+          "total_seconds": 10.579402834
+        },
+        {
+          "eval_duration_ns": 401606000,
+          "generation_tokens_per_second": 37.35003959104196,
+          "input_tokens": 209,
+          "load_duration_ns": 3148383854,
+          "model": "granite4:1b-q4-local",
+          "output_tokens": 15,
+          "prompt_eval_duration_ns": 1244033000,
+          "total_duration_ns": 4796982541,
+          "total_seconds": 4.796982541
+        }
+      ]
+    }
+  ]
+}

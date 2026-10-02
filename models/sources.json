@@ -1,0 +1,47 @@
+{
+  "models": [
+    {
+      "role": "proposer",
+      "alias": "qwen3.8-distill:9b-q4",
+      "filename": "Qwen3.8-9B-Q4_K_M.gguf",
+      "url": "https://huggingface.co/empero-ai/Qwen3.8-9B-Distill-GGUF/resolve/760121cd70bb4c36b2b5ec58eb765e0df5987efe/Qwen3.8-9B-Q4_K_M.gguf",
+      "sha256": "df13d66021cef676f82be74053220fd75af6bf2a6a7fb77f5222ab9e50744a7a",
+      "bytes": 5780090176,
+      "source": "https://huggingface.co/empero-ai/Qwen3.8-9B-Distill-GGUF",
+      "parameters": {
+        "temperature": 0.6,
+        "top_p": 0.95,
+        "top_k": 20
+      }
+    },
+    {
+      "role": "reviewer",
+      "alias": "qwen3.5:4b",
+      "filename": "Qwen3.5-4B-Q4_K_M.gguf",
+      "url": "https://registry.ollama.ai/v2/library/qwen3.5/blobs/sha256:81fb60c7daa80fc1123380b98970b320ae233409f0f71a72ed7b9b0d62f40490",
+      "sha256": "81fb60c7daa80fc1123380b98970b320ae233409f0f71a72ed7b9b0d62f40490",
+      "bytes": 3389971840,
+      "source": "https://ollama.com/library/qwen3.5:4b",
+      "parameters": {
+        "temperature": 0.6,
+        "top_p": 0.95,
+        "top_k": 20,
+        "presence_penalty": 1.5
+      }
+    },
+    {
+      "role": "safety_critic",
+      "alias": "granite4:1b-q4-local",
+      "filename": "granite-4.0-1b-Q4_K_M.gguf",
+      "url": "https://huggingface.co/ibm-granite/granite-4.0-1b-GGUF/resolve/9d50b2b8f00cac46357c4f4823851987745f9dfe/granite-4.0-1b-Q4_K_M.gguf",
+      "sha256": "22ec0f9cc99a90185312de3c882c84e7bd6789bdd050389844380a01a831d7f1",
+      "bytes": 1023645440,
+      "source": "https://huggingface.co/ibm-granite/granite-4.0-1b-GGUF",
+      "template": "models/granite-template.txt",
+      "parameters": {
+        "temperature": 0.3,
+        "num_gpu": 0
+      }
+    }
+  ]
+}

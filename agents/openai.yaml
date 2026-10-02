@@ -1,0 +1,4 @@
+interface:
+  display_name: "The Council of Coding"
+  short_description: "Local proposals with supervisor review"
+  default_prompt: "Use $astra-local-orchestrator to delegate this work locally, then review and refine it."

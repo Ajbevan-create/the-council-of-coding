@@ -1,0 +1,15 @@
+__pycache__/
+*.py[cod]
+rust/target/
+build/
+*.gguf
+*.gguf.part
+runtime.json
+install-receipt.json
+mcp-config.json
+team-runs/
+bridge-inputs/
+model-downloads/
+skill-backups/
+runtime-backups/
+.venv/
